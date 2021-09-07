@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import dev.leonardom.loginjetpackcompose.presentation.login.LoginScreen
+import dev.leonardom.loginjetpackcompose.presentation.registration.RegistrationScreen
 import dev.leonardom.loginjetpackcompose.ui.theme.LoginJetpackComposeTheme
 
 class MainActivity : ComponentActivity() {
@@ -11,7 +12,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             LoginJetpackComposeTheme {
-                LoginScreen()
+                RegistrationScreen()
             }
         }
     }
