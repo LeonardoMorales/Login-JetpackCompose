@@ -36,11 +36,17 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import dev.leonardom.loginjetpackcompose.R
+import dev.leonardom.loginjetpackcompose.presentation.components.EventDialog
 import dev.leonardom.loginjetpackcompose.presentation.components.RoundedButton
 import dev.leonardom.loginjetpackcompose.presentation.components.TransparentTextField
 
 @Composable
-fun LoginScreen() {
+fun LoginScreen(
+    state: LoginState,
+    onLogin: (String, String) -> Unit,
+    onNavigateToRegister: () -> Unit,
+    onDismissDialog: () -> Unit
+) {
 
     val emailValue = rememberSaveable{ mutableStateOf("") }
     val passwordValue = rememberSaveable{ mutableStateOf("") }
@@ -126,7 +132,7 @@ fun LoginScreen() {
                                     onDone = {
                                         focusManager.clearFocus()
 
-                                        //TODO("LOGIN")
+                                        onLogin(emailValue.value, passwordValue.value)
                                     }
                                 ),
                                 imeAction = ImeAction.Done,
@@ -168,9 +174,9 @@ fun LoginScreen() {
                         ) {
                             RoundedButton(
                                 text = "Login",
-                                displayProgressBar = false,
+                                displayProgressBar = state.displayProgressBar,
                                 onClick = {
-                                    // TODO("LOGIN")
+                                    onLogin(emailValue.value, passwordValue.value)
                                 }
                             )
 
@@ -188,7 +194,7 @@ fun LoginScreen() {
                                     }
                                 }
                             ){
-                                // TODO("NAVIGATE TO REGISTER SCREEN")
+                                onNavigateToRegister()
                             }
                         }
                     }
@@ -202,7 +208,9 @@ fun LoginScreen() {
                             end.linkTo(surface.end, margin = 36.dp)
                         },
                     backgroundColor = MaterialTheme.colors.primary,
-                    onClick = {}
+                    onClick = {
+                        onNavigateToRegister()
+                    }
                 ) {
                     Icon(
                         modifier = Modifier.size(42.dp),
@@ -212,6 +220,13 @@ fun LoginScreen() {
                     )
                 }
             }
+        }
+
+        if(state.errorMessage != null){
+            EventDialog(
+                errorMessage = state.errorMessage,
+                onDismiss = onDismissDialog
+            )
         }
     }
 }
